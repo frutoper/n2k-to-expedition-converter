@@ -1,0 +1,27 @@
+# N2K data files
+*.n2kdecoded.csv
+*.n2kascii.txt
+*.n2k
+
+# # Expedition output files
+*_expedition.csv
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Combined output directories
+combined_output/
+output/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
