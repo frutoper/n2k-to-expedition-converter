@@ -167,11 +167,22 @@ Each data row contains:
 
 ### UTC Time Conversion
 
-1. Script scans for all PGN 126992 (System Time) messages
-2. Builds a map of relative timestamps → absolute UTC times
-3. Converts all relative timestamps to UTC using base reference
-4. Handles both MM/DD/YYYY and DD/MM/YYYY date formats automatically
-5. Outputs UTC as fractional days since Excel epoch (1899-12-30)
+The converter uses a two-pass approach for accurate time synchronization:
+
+**Pass 1: Extract System Time References**
+- Scans entire file for all PGN 126992 (System Time) messages
+- Builds a complete map of relative timestamps → absolute UTC times
+- Handles multiple date/time formats automatically:
+  - MM/DD/YYYY HH:MM:SS (e.g., "03/10/2025 15:03:48")
+  - DD/MM/YYYY HH:MM:SS (e.g., "21/07/2025 03:40:28")
+  - NMEA 2000 raw format (days since 1990-05-01, seconds since midnight)
+
+**Pass 2: Convert All Timestamps**
+- Processes all sensor data
+- Converts relative timestamps to UTC using system time references
+- Outputs UTC as fractional days since Excel epoch (1899-12-30)
+
+This ensures all data rows have accurate UTC timestamps, not just rows containing PGN 126992.
 
 ## Data Averaging
 
@@ -200,7 +211,9 @@ Your input file doesn't contain system time messages. The converter will still w
 If UTC times look wrong, check:
 - System time on your N2K GPS device
 - Timezone settings (PGN 126992 should be UTC)
-- Date format in your decoded CSV (MM/DD/YYYY vs DD/MM/YYYY)
+- Date format in your decoded CSV (the script auto-detects MM/DD/YYYY and DD/MM/YYYY formats)
+
+**Note:** The script automatically tries multiple date/time formats, so different N2K decoder tools should work without modification.
 
 ### Large Output Files
 

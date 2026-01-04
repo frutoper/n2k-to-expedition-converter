@@ -91,7 +91,7 @@ def group_files_by_time(file_time_ranges, time_gap_hours=1):
     current_end = sorted_files[0][1]
 
     for i in range(1, len(sorted_files)):
-        start_time, end_time, filepath = sorted_files[i]
+        start_time, end_time, filepath, segment_index = sorted_files[i]
 
         # Check if this file is within time_gap_hours of the current group
         time_diff = start_time - current_end
